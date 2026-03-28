@@ -61,3 +61,4 @@
   ansible.builtin.systemd:
     name: "container-{{ application_container_name }}.service"
     enabled: true
+  when: image_build_result.changed
