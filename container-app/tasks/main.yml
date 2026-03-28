@@ -34,7 +34,7 @@
     build:
       format: docker
       cache: no
-      force_rm: true
+      force: true
     register: image_build_result
 
 - name: Run the container
