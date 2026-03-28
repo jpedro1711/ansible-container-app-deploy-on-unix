@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for node-on-win
+application_dest_folder: /home/applications/hello-js
+repo_url: https://github.com/jpedro1711/hello-world-nodejs.git
+apt_repository: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} universe"
+nodejs_package_name: nodejs
+npm_package_name: npm
+podman_package_name: podman
+application_container_name: hello-js-container
+application_name: hello-js
+application_port: 3000
+container_port: 80
+systemd_destination: /etc/systemd/system/

@@ -1,0 +1,55 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for node-on-win
+- name: Add apt repository
+  ansible.builtin.apt_repository:
+    repo: "{{ apt_repository }}"
+    state: present
+
+- name: Update cache
+  ansible.builtin.apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Install nodejs and npm packages
+  ansible.builtin.apt:
+    pkg:
+      - "{{ nodejs_package_name }}"
+      - "{{ npm_package_name }}"
+      - "{{ podman_package_name }}"
+
+- name: Clone the application repository
+  ansible.builtin.git:
+    repo: "{{ repo_url }}" 
+    dest: "{{ application_dest_folder }}"
+    single_branch: yes
+    version: main
+
+- name: Build the hello-js Docker image
+  containers.podman.podman_image:
+    name: "{{ application_name }}"
+    path: "{{ application_dest_folder }}"
+    build:
+      format: docker
+
+- name: Run the container
+  containers.podman.podman_container:
+    name: "{{ application_container_name }}"
+    image: "{{ application_name }}"
+    state: started
+    detach: true
+    exposed_ports:
+      - "{{ container_port }}"
+    ports:
+      - "{{ container_port }}:{{ application_port }}"
+
+- name: Generate systemd unit file for the container
+  containers.podman.podman_generate_systemd:
+    name: "{{ application_container_name }}"
+    dest: "{{ systemd_destination }}"
+  notify: Reload daemon
+
+- name: Enable systemd service for the container
+  ansible.builtin.systemd:
+    name: "container-{{ application_container_name }}.service"
+    enabled: true

@@ -1,0 +1,6 @@
+---
+- name: Deploy container app using podman
+  hosts: container-app-hosts
+  become: true
+  roles:
+    - container-app
