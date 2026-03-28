@@ -24,6 +24,7 @@
     dest: "{{ application_dest_folder }}"
     single_branch: yes
     version: main
+    update: yes
 
 - name: Build the hello-js Docker image
   containers.podman.podman_image:
