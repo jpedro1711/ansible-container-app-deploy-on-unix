@@ -32,7 +32,7 @@
   containers.podman.podman_image:
     name: "{{ application_name }}"
     path: "{{ application_dest_folder }}"
-    force: "{{ git_result.changed }}"
+    force: yes
     build:
       format: docker
       cache: no
