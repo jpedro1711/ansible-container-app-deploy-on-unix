@@ -33,6 +33,9 @@
     path: "{{ application_dest_folder }}"
     build:
       format: docker
+      cache: no
+      force_rm: true
+    register: image_build_result
 
 - name: Run the container
   containers.podman.podman_container:
@@ -45,12 +48,14 @@
       - "{{ container_port }}"
     ports:
       - "{{ container_port }}:{{ application_port }}"
+  when: image_build_result.changed
 
 - name: Generate systemd unit file for the container
   containers.podman.podman_generate_systemd:
     name: "{{ application_container_name }}"
     dest: "{{ systemd_destination }}"
   notify: Reload daemon
+  when: image_build_result.changed
 
 - name: Enable systemd service for the container
   ansible.builtin.systemd:
