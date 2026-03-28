@@ -4,3 +4,8 @@
 - name: Reload daemon
   ansible.builtin.systemd:
     daemon_reload: true
+
+- name: Restart application service
+  ansible.builtin.systemd:
+    name: "container-{{ application_container_name }}.service"
+    state: restarted
