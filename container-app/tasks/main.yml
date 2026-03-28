@@ -38,6 +38,7 @@
     image: "{{ application_name }}"
     state: started
     detach: true
+    recreate: true
     exposed_ports:
       - "{{ container_port }}"
     ports:
