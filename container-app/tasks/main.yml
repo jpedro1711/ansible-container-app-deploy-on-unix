@@ -25,6 +25,7 @@
     single_branch: yes
     version: main
     update: yes
+    force: yes
 
 - name: Build the hello-js Docker image
   containers.podman.podman_image:
