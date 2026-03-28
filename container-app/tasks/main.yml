@@ -35,7 +35,7 @@
       format: docker
       cache: no
       force: true
-    register: image_build_result
+  register: image_build_result
 
 - name: Run the container
   containers.podman.podman_container:
